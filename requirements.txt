@@ -1,6 +1,5 @@
 pygame
 langchain_openai
-langchain_core.messages
+langchain_core
 pathlib
-json
 pygame_gui
