@@ -1,2 +1,6 @@
 pygame
+langchain_openai
+langchain_core.messages
+pathlib
+json
 pygame_gui
