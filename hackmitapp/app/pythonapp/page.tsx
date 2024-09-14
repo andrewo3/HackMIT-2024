@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[1px_1fr_1fr_50px] items-center justify-items-center min-h-screen p-4 ">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-center">
+    <div className="grid grid-rows-[1fr_50px] items-center justify-items-center min-h-screen p-4 ">
+      <main className="flex flex-col gap-8 row-start-1 items-center sm:items-center">
         <iframe
           src="http://localhost:8000"
           title="External Website"

@@ -108,7 +108,7 @@ class PianoRoll(UIElem):
                 elif self.pos[1]>87:
                     self.pos[1] = 87
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                
+                pass
             
     def draw(self,window):
         offsetx = -self.scale[0]*(self.pos[0]%1)
