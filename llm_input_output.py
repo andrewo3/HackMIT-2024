@@ -1,15 +1,19 @@
-from receiveInput import Receiver
 import pygame
-from pygame_gui.elements import *
-from llm_query import query_llm
+pygame.init()
 
-def main():
-    win = Receiver((800,800),"Test")
+from receiveInput import Receiver
+from llm_query import query_llm
+import asyncio
+
+async def main():
+    win = Receiver((0.5,0.5),"Test")
     manager = win.get_manager()
 
-    while True:
+    while win.running:
         input = win.receiveInput()
-        win.print_output (query_llm (input))
+        output = query_llm (input)
+        print(output)
+        await asyncio.sleep(0)
         
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
