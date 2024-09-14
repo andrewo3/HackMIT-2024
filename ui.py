@@ -1,6 +1,6 @@
 import pygame
-UI_FONT = pygame.font.SysFont("arial",20)
-
+UI_FONT = pygame.font.SysFont("arial",10)
+NOTE_NAMES = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"]
 
 class UIElem():
     def __init__(self,x,y,w,h):
@@ -107,6 +107,8 @@ class PianoRoll(UIElem):
                     self.pos[1] = 0
                 elif self.pos[1]>87:
                     self.pos[1] = 87
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                
             
     def draw(self,window):
         offsetx = -self.scale[0]*(self.pos[0]%1)
@@ -119,14 +121,21 @@ class PianoRoll(UIElem):
         
         c = offsety-self.scale[1]
         start_note = int(self.pos[1])
-        while c<self.scaled_rect.h:
+        
+        while c<self.scaled_rect.h: #draw horizontal grid lines and note names
             pygame.draw.line(self.surface,(255,255,255),(0,c),(self.scaled_rect.w,c))
             black_key = start_note%12 in [1,4,6,9,11]
             pygame.draw.rect(window,(0,0,0) if black_key else (255,255,255),pygame.Rect(0,c+self.scaled_rect.top,self.scaled_rect.left,self.scale[1]))
-            start_note+=1
+            note_name = UI_FONT.render(NOTE_NAMES[start_note%12]+str((start_note+45)//12),True,(255,255,255) if black_key else (0,0,0))
+            window.blit(note_name,(self.scaled_rect.left-note_name.get_width(),c+self.scaled_rect.top+(self.scale[1]-note_name.get_height())//2))
+            start_note-=1
             c+=self.scale[1]
+        pygame.draw.rect(window,(0,0,0),pygame.Rect(0,0,self.scaled_rect.left,self.scaled_rect.top))
+        pygame.draw.rect(window,(0,0,0),pygame.Rect(0,window.get_height()-self.scaled_rect.top,self.scaled_rect.left,self.scaled_rect.top))
+            
         
-        print(start_note)
+        
+        #print(start_note)
         c = offsety-self.scale[1]
         
         
