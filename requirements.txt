@@ -2,4 +2,4 @@ pygame
 langchain_openai
 langchain_core
 pathlib
-pygame_gui
+pygbag
