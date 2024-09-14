@@ -2,8 +2,15 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[1px_1fr_1fr_50px] items-center justify-items-center min-h-screen p-8 ">
+    <div className="grid grid-rows-[1px_1fr_1fr_50px] items-center justify-items-center min-h-screen p-4 ">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-center">
+        <iframe
+          src="http://localhost:8000"
+          title="External Website"
+          width="1000"
+          height="600"
+          style={{ border: "none" }}
+        ></iframe>
         <ol className="text-m text-center sm:text-center">
           <li> We've designed an LLM integrated music creator to lower the barrier of access to music creation!</li>
           <li>We hope tools like these will help make learning music theory and music creation more accessible!</li>
