@@ -4,12 +4,6 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[1px_1fr_1fr_50px] items-center justify-items-center min-h-screen p-8 ">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-center">
-        <img
-          src="https://lh3.googleusercontent.com/d/1f_FS7UKUeTZxGdRaqkNsv6_GHEVO9SVs?authuser=1/view"
-          alt="HackMIT logo"
-          width={500}
-          height={100}
-        />
         <ol className="text-m text-center sm:text-center">
           <li> We've designed an LLM integrated music creator to lower the barrier of access to music creation!</li>
           <li>We hope tools like these will help make learning music theory and music creation more accessible!</li>
@@ -41,53 +35,6 @@ export default function Home() {
           </a>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-1 hover:underline hover:underline-offset-4"
-          href="/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          See Our Git Repository →
-        </a>
-      </footer>
     </div>
   );
 }
