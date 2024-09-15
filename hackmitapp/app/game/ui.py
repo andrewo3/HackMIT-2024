@@ -1,4 +1,12 @@
 import pygame
+import pygame.midi
+#import fluidsynth
+
+pygame.init()
+#fs = fluidsynth.Synth()
+#fs.start()
+#sfid = fs.sfload("piano.sf2")
+#fs.program_select(0,sfid,0,0)
 UI_FONT = pygame.font.SysFont("arial",10)
 NOTE_NAMES = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"]
 
@@ -95,12 +103,21 @@ class PianoRoll(UIElem):
         self.drag = False
         self.drag_note = 0
         self.drag_start = 0
+        self.playing = False
         
     def update(self,window,events):
         super().update(window)
         self.scale_bar.update(window,events)
         self.scale = [20*self.scale_bar.scale[0],10*self.scale_bar.scale[1]]
         self.surface = pygame.Surface(self.scaled_rect.size)
+        if self.playing:
+            self.pos[0]+=0.1
+            offsetx = -self.scale[0]*(self.pos[0]%1)
+            offsety = self.scale[1]*(self.pos[1]%1)
+            for note in self.notes:
+                notey = (int(self.pos[1]+35-note.key))*self.scale[1]+offsety
+                notex = (note.start-self.pos[0])*self.scale[0]
+                #print(notex)
         for event in events:
             if event.type == pygame.MOUSEWHEEL:
                 #print(event.x,event.y,mouse_buttons)
@@ -112,6 +129,10 @@ class PianoRoll(UIElem):
                     self.pos[1] = 0
                 elif self.pos[1]>87:
                     self.pos[1] = 87
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    self.playing += 1
+                    self.playing %= 2
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1 and self.scaled_rect.collidepoint(pygame.mouse.get_pos()):
                     num_notes = (event.pos[1]-self.scaled_rect.top)//self.scale[1]
