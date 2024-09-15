@@ -1,2 +1,2 @@
 cd ..
-pygbag HackMIT-2024
+pygbag game

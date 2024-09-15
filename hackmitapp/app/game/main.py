@@ -27,9 +27,6 @@ async def main():
             #test_button.draw(win.win)
             piano_roll.draw(win.win)
             win.draw()
-        else:
-            writer.close()
-            await writer.wait_closed()
         await asyncio.sleep(0)
     
 if __name__ == "__main__":

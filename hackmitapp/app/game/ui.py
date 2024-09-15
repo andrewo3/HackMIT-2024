@@ -1,12 +1,11 @@
 import pygame
-import pygame.midi
-#import fluidsynth
+import fluidsynth
 
 pygame.init()
-#fs = fluidsynth.Synth()
-#fs.start()
-#sfid = fs.sfload("piano.sf2")
-#fs.program_select(0,sfid,0,0)
+fs = fluidsynth.Synth()
+fs.start()
+sfid = fs.sfload("piano.sf2")
+fs.program_select(0,sfid,0,0)
 UI_FONT = pygame.font.SysFont("arial",10)
 NOTE_NAMES = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"]
 
@@ -112,12 +111,14 @@ class PianoRoll(UIElem):
         self.surface = pygame.Surface(self.scaled_rect.size)
         if self.playing:
             self.pos[0]+=0.1
-            offsetx = -self.scale[0]*(self.pos[0]%1)
-            offsety = self.scale[1]*(self.pos[1]%1)
             for note in self.notes:
-                notey = (int(self.pos[1]+35-note.key))*self.scale[1]+offsety
-                notex = (note.start-self.pos[0])*self.scale[0]
-                #print(notex)
+                notex = int((note.start-self.pos[0])*self.scale[0])
+                notex_end = int((note.end-self.pos[0])*self.scale[0])
+                if int(notex)==0:
+                    fs.noteon(0,note.key+9,100)
+                elif int(notex_end)==0:
+                    fs.noteoff(0,note.key+9)
+                    
         for event in events:
             if event.type == pygame.MOUSEWHEEL:
                 #print(event.x,event.y,mouse_buttons)

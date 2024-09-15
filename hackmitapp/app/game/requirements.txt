@@ -2,4 +2,6 @@ pygame
 langchain_openai
 langchain_core
 pathlib
+aiohttp
+multidict
 pygbag
