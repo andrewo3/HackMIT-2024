@@ -17,7 +17,7 @@ def query_llm(message) -> str:
     answer_dict = response.dict(exclude={'run'})
     answer = answer_dict["generations"][0][0]["text"]
     store_dict = {"Input" : message, "Output": answer}
-    print(store_dict);
+    print(store_dict)
     with open("llm_query.json", mode='a') as f:
         json.dump(store_dict, f)
     return answer

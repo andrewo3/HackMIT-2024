@@ -5,18 +5,77 @@ class Receiver():
     def __init__(self,size,title="new window"):
         pygame.init()
         self.win = pygame.display.set_mode(size)
-        self.base_font = pygame.font.Font(None, 32)
+        self.window_width = self.win.get_size()[0]
+        self.window_height = self.win.get_size()[1]
+        font_size = self.window_width // 20
+        self.base_font = pygame.font.SysFont(None, 32)
         pygame.display.set_caption(title)
         self.ui_manager = pygame_gui.UIManager(size,theme_path="static/theme.json")
         self.clock = pygame.time.Clock()
         self.running = True
+        self.textAlignLeft = 0
+        self.textAlignRight = 1
+        self.textAlignCenter = 2
+        self.textAlignBlock = 3
     def get_manager(self):
         return self.ui_manager
+    
+
+    def drawText(self,surface, text, color, rect, font, align=0, aa=False, bkg=None):
+        lineSpacing = -2
+        spaceWidth, fontHeight = font.size(" ")[0], font.size("Tg")[1]
+
+        listOfWords = text.split(" ")
+        if bkg:
+            imageList = [font.render(word, 1, color, bkg) for word in listOfWords]
+            for image in imageList: image.set_colorkey(bkg)
+        else:
+            imageList = [font.render(word, aa, color) for word in listOfWords]
+
+        maxLen = rect[2]
+        lineLenList = [0]
+        lineList = [[]]
+        for image in imageList:
+            width = image.get_width()
+            lineLen = lineLenList[-1] + len(lineList[-1]) * spaceWidth + width
+            if len(lineList[-1]) == 0 or lineLen <= maxLen:
+                lineLenList[-1] += width
+                lineList[-1].append(image)
+            else:
+                lineLenList.append(width)
+                lineList.append([image])
+
+        lineBottom = rect[1]
+        lastLine = 0
+        for lineLen, lineImages in zip(lineLenList, lineList):
+            lineLeft = rect[0]
+            if align == self.textAlignRight:
+                lineLeft += + rect[2] - lineLen - spaceWidth * (len(lineImages)-1)
+            elif align == self.textAlignCenter:
+                lineLeft += (rect[2] - lineLen - spaceWidth * (len(lineImages)-1)) // 2
+            elif align == self.textAlignBlock and len(lineImages) > 1:
+                spaceWidth = (rect[2] - lineLen) // (len(lineImages)-1)
+            if lineBottom + fontHeight > rect[1] + rect[3]:
+                break
+            lastLine += 1
+            for i, image in enumerate(lineImages):
+                x, y = lineLeft + i*spaceWidth, lineBottom
+                surface.blit(image, (round(x), y))
+                lineLeft += image.get_width() 
+            lineBottom += fontHeight + lineSpacing
+
+        if lastLine < len(lineList):
+            drawWords = sum([len(lineList[i]) for i in range(lastLine)])
+            remainingText = ""
+            for text in listOfWords[drawWords:]: remainingText += text + " "
+            return remainingText
+        return ""
+
     #create window for input
     def receiveInput(self):     
         user_text = ''
         #create rectangle
-        input_rect = pygame.Rect(350, 750, 1000, 30)
+        input_rect = pygame.Rect(self.window_width / 4, 4*self.window_height / 6, 1000, 30)
 
         # color_active stores color(lightskyblue3) which 
         # gets active when input box is clicked by user 
@@ -87,7 +146,8 @@ class Receiver():
 
     def print_output (self, str):
         text_surface = self.base_font.render(str, True, (0, 0, 0)) 
-        self.win.blit(text_surface, (500,500))
+        self.drawText(self.win, str, (0, 0, 0), self.base_font, self.textAlignBlock, True)
+        self.win.blit(text_surface, (self.window_width / 4, 7*self.window_height / 8))
         pygame.display.flip()
 
             

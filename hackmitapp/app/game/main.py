@@ -19,13 +19,17 @@ async def main():
     win = Window((0.5,0.5),"Test")
     #test_button = Button(0.1,0.1,0.3,0.3,"Testing",(30,30,30),(100,255,0),5,10)
     piano_roll = PianoRoll(0.1,0.1,0.8,0.8)
+    textbox = TextBox(0.1,0.9,0.1,0.1)
+    waiting_for_input = True
     while win.running:
         events = pygame.event.get()
         #test_button.update(win.win,events)
         piano_roll.update(win.win,events)
+        textbox.update(win.win,events)
         if win.update(events):
             #test_button.draw(win.win)
             piano_roll.draw(win.win)
+            textbox.draw(win.win)
             win.draw()
         await asyncio.sleep(0)
     

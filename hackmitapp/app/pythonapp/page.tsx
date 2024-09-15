@@ -1,13 +1,16 @@
-"use client"; // Ensure this is also a Client Component for interactivity
+"use client";
 
-import Image from "next/image";
-import { InspireButton } from "./inspire"; // Import the button from inspire.tsx
+import { InspireButton } from "./inspire";
+import { LLMButton } from "./llm";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[1fr_50px] items-center justify-items-center min-h-screen p-4 ">
-      <main className="flex flex-col gap-8 row-start-1 items-center sm:items-center">
-        <InspireButton />
+    <div className="grid grid-rows-[1fr] items-center justify-items-center min-h-screen ">
+      <main className="flex flex-col gap-4 items-center sm:items-center">
+        <div className="flex flex-row gap-4 items-center">
+         <InspireButton />
+         <LLMButton />
+        </div>
         <iframe
           src="http://localhost:8000"
           title="External Website"
@@ -15,42 +18,6 @@ export default function Home() {
           height="600"
           style={{ border: "none" }}
         ></iframe>
-        <ol className="text-m text-center sm:text-center">
-          <li>
-            We've designed an LLM integrated music creator to lower the barrier
-            of access to music literacy!
-          </li>
-          <li>
-            We hope tools like these will help make learning music theory and
-            music creation more accessible!
-          </li>
-        </ol>
-
-        <div className="flex gap-3 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
       </main>
     </div>
   );
