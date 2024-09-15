@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export const InspireButton = () => {
+export const LLMButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState(""); 
@@ -26,9 +26,9 @@ export const InspireButton = () => {
     <div>
       <button
         onClick={openModal}
-        className="rounded-full bg-blue-500 text-white px-6 py-2 mb-4"
+        className="rounded-full bg-green-500 text-white px-6 py-2 mb-4"
       >
-        Get Musical Generative AI Inspiration!
+        Learn from LLM Music Teacher Agents!
       </button>
 
       {isOpen && (
