@@ -11,12 +11,12 @@ def get_secret(secret_file: Path=Path('SECRET_TuneStudio.txt')) -> str:
     return secret
 
 def query_llm(message) -> str:
-    model = ChatOpenAI(openai_api_key=get_secret(), base_url="https://proxy.tune.app/", model= "rohan/tune-gpt-4o-mini", n = 1)
-    QueryMessage = [SystemMessage(content="You are a helpful Assistant"), HumanMessage(content=message)]
+    model = ChatOpenAI(openai_api_key=get_secret(), base_url="https://proxy.tune.app/", model= "rohan/tune-gpt-4o-mini", n = 1,max_tokens=50)
+    QueryMessage = [SystemMessage(content="You are a helpful Assistant"), HumanMessage(content="In 10 words or less, "+message)]
     response = model.generate([QueryMessage])
     answer_dict = response.dict(exclude={'run'})
     answer = answer_dict["generations"][0][0]["text"]
-    store_dict = {"Input" : message, "Output": answer}
+    store_dict = {"Input" : "In 10 words or less, "+message, "Output": answer}
     print(store_dict)
     with open("llm_query.json", mode='a') as f:
         json.dump(store_dict, f)
