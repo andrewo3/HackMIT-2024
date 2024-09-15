@@ -11,7 +11,7 @@ export default function Home() {
           height={100}
         />
         <ol className="text-m text-center sm:text-center">
-          <li> We've designed an LLM integrated music creator to lower the barrier of access to music creation!</li>
+          <li> We've designed an LLM integrated music creator to lower the barrier of access to music literacy!</li>
           <li>We hope tools like these will help make learning music theory and music creation more accessible!</li>
         </ol>
 

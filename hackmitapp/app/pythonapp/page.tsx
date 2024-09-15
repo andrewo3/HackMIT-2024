@@ -18,7 +18,7 @@ export default function Home() {
         <ol className="text-m text-center sm:text-center">
           <li>
             We've designed an LLM integrated music creator to lower the barrier
-            of access to music creation!
+            of access to music literacy!
           </li>
           <li>
             We hope tools like these will help make learning music theory and
