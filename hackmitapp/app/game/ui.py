@@ -1,4 +1,8 @@
 import pygame
+from llm_query import query_llm
+from time import sleep
+
+#pygame.key.set_repeat(500,50)
 UI_FONT = pygame.font.SysFont("arial",10)
 NOTE_NAMES = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"]
 
@@ -187,3 +191,68 @@ class PianoRoll(UIElem):
         
         window.blit(self.surface,(self.scaled_rect.x,self.scaled_rect.y))
         self.scale_bar.draw(window)
+
+class TextBox(UIElem):
+    def __init__(self,x,y,w,h):
+        super().__init__(x,y,w,h)
+        self.active = False
+        self.color_active = pygame.Color('black') 
+        self.color_passive = pygame.Color('gray') 
+        self.color = self.color_passive
+        self.input_rect = pygame.Rect(self.x, self.y, 500, 30)
+        self.user_text = ''
+        self.output = ''
+    def update(self,window,events):
+        super().update(window)
+        
+        self.active = False
+        for event in events:
+            if event.type == pygame.QUIT:
+                pygame.quit() 
+                self.running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN: 
+                    if self.input_rect.collidepoint(event.pos): 
+                        self.active = True
+                    else: 
+                        self.active = False
+            elif event.type == pygame.KEYDOWN: 
+  
+                    # Check for backspace 
+                    if event.key == pygame.K_BACKSPACE: 
+                        # get text input from 0 to -1 i.e. end. 
+                        self.user_text = self.user_text[:-1] 
+  
+                    # Unicode standard is used for string 
+                    # formation 
+                    elif event.key == pygame.K_RETURN:
+                        self.output = query_llm(self.user_text)
+                    else:
+                        self.user_text += event.unicode
+            if self.active: 
+                self.color = self.color_active 
+            else: 
+                self.color = self.color_passive
+    def draw(self,window):
+        pygame.draw.rect(window, self.color, self.input_rect, 2, 3) 
+  
+        text_surface = UI_FONT.render(self.user_text, True, (255, 255, 255)) 
+      
+            # render at position stated in arguments 
+        window.blit(text_surface, (self.input_rect.x+5, self.input_rect.y+5)) 
+      
+            # set width of textfield so that text cannot get 
+            # outside of user's text input 
+        self.input_rect.w = max(100, text_surface.get_width()+10) 
+        self.print_output(self.output, window)
+        
+            # display.flip() will update only a portion of the 
+            # screen to updated, not full area 
+        #pygame.display.flip() 
+      
+            # clock.tick(60) means that for every second at most 
+            # 60 frames should be passed. 
+        #self.clock.tick(60)
+    def print_output (self, str, window):
+        text_surface = UI_FONT.render(str, True, (255, 255, 255)) 
+        window.blit(text_surface, (self.scaled_rect.x+self.scaled_rect.w+10, 9*self.h/10))
+
