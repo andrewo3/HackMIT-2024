@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 
-export const InspireButton = () => {
+export const LLMButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState(""); 
   const [isRickroll, setIsRickroll] = useState(false); 
-  const [mediaType, setMediaType] = useState("video"); 
+  const [mediaType, setMediaType] = useState("Theory"); 
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => {
@@ -26,9 +26,9 @@ export const InspireButton = () => {
     <div>
       <button
         onClick={openModal}
-        className="rounded-full bg-blue-500 text-white px-6 py-2 mb-4"
+        className="rounded-full bg-green-500 text-white px-6 py-2 mb-4"
       >
-        Get Musical Generative AI Inspiration!
+        Learn from LLM Music Teacher Agents!
       </button>
 
       {isOpen && (
@@ -40,10 +40,9 @@ export const InspireButton = () => {
             className="bg-white p-8 rounded-lg shadow-lg max-w-3xl w-full"
             onClick={(e) => e.stopPropagation()} 
           >
-            <h2 className="text-3xl font-semibold mb-6">Be Inspired!</h2>
+            <h2 className="text-3xl font-semibold mb-6">Learn About Music</h2>
             <p className="mb-6">
-              Here's some AI-generated inspiration for your creative process! Keep pushing
-              forward, and don't stop learning.
+              Hi! I'm your Music Teacher LLM Agent! Feel free to asny me any music related questions!
             </p>
 
             <div className="flex gap-3">
@@ -59,8 +58,8 @@ export const InspireButton = () => {
                 onChange={(e) => setMediaType(e.target.value)}
                 className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="video">Video</option>
-                <option value="audio">Audio</option>
+                <option value="Technical">Technical</option>
+                <option value="Theory">Theory</option>
               </select>
               <button
                 onClick={handleSearch}
@@ -76,28 +75,15 @@ export const InspireButton = () => {
               </div>
             )}
 
-            {isRickroll && mediaType === "video" && (
+            {isRickroll && mediaType === "Technical" && (
               <div className="mt-6">
-                <iframe
-                  width="100%"
-                  height="400"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"//Would be an AI generated link from Suno outside proof of concept
-                  title="YouTube video player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+                Thank you for asking such a profound Technical question. The Music Teacher LLM is unfortunately not accessible at this time!
               </div>
             )}
 
-            {isRickroll && mediaType === "audio" && (
+            {isRickroll && mediaType === "Theory" && (
               <div className="mt-6 flex justify-center">
-                <audio controls autoPlay>
-                  <source
-                    src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"//Would be an AI generated link from Suno outside proof of concept
-                    type="audio/mpeg"
-                  />
-                  Your browser does not support the audio element.
-                </audio>
+                Thank you for asking such a profound Theory question. The Music Teacher LLM is unfortunately not accessible at this time!
               </div>
             )}
 
