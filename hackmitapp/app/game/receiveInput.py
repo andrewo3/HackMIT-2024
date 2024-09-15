@@ -13,13 +13,10 @@ class Receiver():
     def get_manager(self):
         return self.ui_manager
     #create window for input
-    def receiveInput(self):
-        clock = pygame.time.Clock()
-        
+    def receiveInput(self):     
         user_text = ''
-
         #create rectangle
-        input_rect = pygame.Rect(350, 750, 750, 32)
+        input_rect = pygame.Rect(350, 750, 1000, 30)
 
         # color_active stores color(lightskyblue3) which 
         # gets active when input box is clicked by user 
@@ -69,9 +66,9 @@ class Receiver():
           
             # draw rectangle and argument passed which should 
             # be on screen 
-            pygame.draw.rect(self.win, color, input_rect) 
+            pygame.draw.rect(self.win, color, input_rect, 2, 3) 
   
-            text_surface = self.base_font.render(user_text, True, (255, 255, 255)) 
+            text_surface = self.base_font.render(user_text, True, (0, 0, 0)) 
       
             # render at position stated in arguments 
             self.win.blit(text_surface, (input_rect.x+5, input_rect.y+5)) 
@@ -86,10 +83,11 @@ class Receiver():
       
             # clock.tick(60) means that for every second at most 
             # 60 frames should be passed. 
-            clock.tick(60)
+            self.clock.tick(60)
 
     def print_output (self, str):
         text_surface = self.base_font.render(str, True, (0, 0, 0)) 
-        self.win.blit(text_surface, (0,0))
+        self.win.blit(text_surface, (500,500))
+        pygame.display.flip()
 
             

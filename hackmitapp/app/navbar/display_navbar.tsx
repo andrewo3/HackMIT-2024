@@ -9,9 +9,9 @@ const WebsiteNavbar = () => {
   </div>
   <div className="navbar-left">
     <a href="/pythonapp">Try it!</a>
-    <a href="/projectinfo">Learn More</a>
   </div>
   <div className="navbar-right">
+    <a href="/projectinfo">Learn More</a>
     <a href="/">About Us</a>
   </div>
 </nav>

@@ -1,9 +1,13 @@
+"use client"; // Ensure this is also a Client Component for interactivity
+
 import Image from "next/image";
+import { InspireButton } from "./inspire"; // Import the button from inspire.tsx
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[1px_1fr_1fr_50px] items-center justify-items-center min-h-screen p-4 ">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-center">
+    <div className="grid grid-rows-[1fr_50px] items-center justify-items-center min-h-screen p-4 ">
+      <main className="flex flex-col gap-8 row-start-1 items-center sm:items-center">
+        <InspireButton />
         <iframe
           src="http://localhost:8000"
           title="External Website"
@@ -12,8 +16,14 @@ export default function Home() {
           style={{ border: "none" }}
         ></iframe>
         <ol className="text-m text-center sm:text-center">
-          <li> We've designed an LLM integrated music creator to lower the barrier of access to music creation!</li>
-          <li>We hope tools like these will help make learning music theory and music creation more accessible!</li>
+          <li>
+            We've designed an LLM integrated music creator to lower the barrier
+            of access to music literacy!
+          </li>
+          <li>
+            We hope tools like these will help make learning music theory and
+            music creation more accessible!
+          </li>
         </ol>
 
         <div className="flex gap-3 items-center flex-col sm:flex-row">
