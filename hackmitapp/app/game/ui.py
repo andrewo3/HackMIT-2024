@@ -71,7 +71,7 @@ class ScaleBar(UIElem):
                 if event.button==1 and self.scaled_rect.collidepoint(pygame.mouse.get_pos()):
                     self.clicked = True
             elif event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 2:
+                if event.button == 1:
                     self.clicked = False
     def draw(self,window):
         surf = pygame.Surface(self.scaled_rect.size)
@@ -80,6 +80,8 @@ class ScaleBar(UIElem):
         pygame.draw.line(surf,(0,0,0),(0,self.scaled_rect.h//2),(self.scaled_rect.w,self.scaled_rect.h//2))
         window.blit(surf,self.scaled_rect.topleft)
   
+def note_name(num):
+    return NOTE_NAMES[num%12]+str((num+9)//12)
 class PianoRoll(UIElem):
     def __init__(self,x,y,w,h):
         super().__init__(x,y,w,h)
@@ -90,6 +92,9 @@ class PianoRoll(UIElem):
         self.surface = None
         self.scroll_strength = 0.2
         self.scale_bar = ScaleBar(0.9,0.1,0.02,0.02)
+        self.drag = False
+        self.drag_note = 0
+        self.drag_start = 0
         
     def update(self,window,events):
         super().update(window)
@@ -99,22 +104,63 @@ class PianoRoll(UIElem):
         for event in events:
             if event.type == pygame.MOUSEWHEEL:
                 #print(event.x,event.y,mouse_buttons)
-                self.pos[0]+=self.scroll_strength*-event.x
+                self.pos[0]+=self.scroll_strength*event.x
                 if self.pos[0]<0:
                     self.pos[0] = 0
-                self.pos[1]+=self.scroll_strength*-event.y
+                self.pos[1]+=self.scroll_strength*event.y
                 if self.pos[1]<0:
                     self.pos[1] = 0
                 elif self.pos[1]>87:
                     self.pos[1] = 87
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                
+                if event.button == 1 and self.scaled_rect.collidepoint(pygame.mouse.get_pos()):
+                    num_notes = (event.pos[1]-self.scaled_rect.top)//self.scale[1]
+                    dist_from_left = (event.pos[0]-self.scaled_rect.left)/self.scale[0]
+                    self.drag_note = int(self.pos[1])+35-num_notes
+                    self.drag_start = int(self.pos[0]+dist_from_left)
+                    self.drag = True
+                elif event.button == 3:
+                    offsety = self.scale[1]*(self.pos[1]%1)
+                    remove = None
+                    for note in self.notes:
+                        notey = (int(self.pos[1]+35-note.key))*self.scale[1]+offsety
+                        notex = (note.start-self.pos[0])*self.scale[0]
+                        if -self.scale[1]<notey<self.scaled_rect.h:
+                            note_rect = pygame.Rect(notex+self.scaled_rect.left,notey+self.scaled_rect.top,self.scale[0]*(note.end-note.start+1),self.scale[1])
+                            print(note_rect)
+                            if note_rect.collidepoint(pygame.mouse.get_pos()):
+                                remove = note
+                    if remove is not None:
+                        self.notes.remove(remove)
             
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1 and self.drag and self.scaled_rect.collidepoint(pygame.mouse.get_pos()):
+                    dist_from_left = (event.pos[0]-self.scaled_rect.left)/self.scale[0]
+                    drag_end = int(self.pos[0]+dist_from_left)
+                    print(event.pos,note_name(int(self.drag_note)),drag_end-self.drag_start+1)
+                    new_note = Note(self.drag_start,drag_end,int(self.drag_note))
+                    if not (self.drag_start,drag_end,int(self.drag_note)) in [(n.start,n.end,n.key) for n in self.notes]:
+                        for note in self.notes:
+                            overlap = new_note.start <= note.start and new_note.end >= note.start or \
+                                note.start <= new_note.start and note.end >= new_note.start
+                            if note.key == new_note.key and overlap:
+                                break 
+                        else:
+                            self.notes.append(new_note)
+                    self.drag = False
+
     def draw(self,window):
         offsetx = -self.scale[0]*(self.pos[0]%1)
         offsety = self.scale[1]*(self.pos[1]%1)
         c = offsetx+self.scale[0]
         self.surface.fill(self.bg_color)
+        for note in self.notes:
+            notey = (int(self.pos[1]+35-note.key))*self.scale[1]+offsety
+            notex = (note.start-self.pos[0])*self.scale[0]
+            if -self.scale[1]<notey<self.scaled_rect.h:
+                pygame.draw.rect(self.surface,(0,128,255),pygame.Rect(notex,notey,self.scale[0]*(note.end-note.start+1),self.scale[1]),border_radius=40)
+                pygame.draw.rect(self.surface,(255,255,255),pygame.Rect(notex,notey,self.scale[0]*(note.end-note.start+1),self.scale[1]),width=1,border_radius=40)
+                #print(notey)
         while c<self.scaled_rect.w: #draw vertical grid lines
             pygame.draw.line(self.surface,(255,255,255),(c,0),(c,self.scaled_rect.h))
             c+=self.scale[0]
